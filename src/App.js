@@ -1,17 +1,19 @@
 import React from "react";
 import {BrowserRouter as Router, Route} from "react-router-dom";
+import PrivateRoute from "./PrivateRoute";
+import Login from "./Components/Auth/Login/Login";
 import SignUp from "./Components/Auth/Signup/SignUp";
 import Chat from "./Components/Chat/Chat";
-import { AuthProvider } from "./contexts/AuthContext";
-
 
 function App() {
   return (
-    <AuthProvider>
+    <>
       <Router>
-        <Route path="/signup" exact component={SignUp} />
+        <PrivateRoute exact path="/" component={Chat} />
+        <Route path="/signup" component={SignUp} />
+        <Route path="/login" component={Login} />
       </Router>
-    </AuthProvider>
+    </>
   );
 }
 

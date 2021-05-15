@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import io from "socket.io-client";
 import queryString from "query-string";
+import { logout } from "../Auth/Auth";
 
 let socket;
 
@@ -23,7 +24,7 @@ function Chat ({ location }) {
 
   return (
     <div>
-      Chat
+      <button onClick={logout}>Sign Out</button>
     </div>
   )
 }
