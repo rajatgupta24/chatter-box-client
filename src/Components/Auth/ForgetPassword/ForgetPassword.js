@@ -1,5 +1,5 @@
 import React, { useRef } from 'react';
-import { signup } from "../Auth";
+import { login } from "../Auth";
 import { Link, useHistory } from "react-router-dom";
 import {Button, Container} from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
@@ -9,11 +9,12 @@ const useStyles = makeStyles((theme) => ({
     maxWidth: "600px",
   },
   heading: {
-    fontSize: "2.5rem",
+    marginTop: "5vh",
+    fontSize: "2rem",
     textAlign: "center",
   },
   form: {
-    marginTop: "10vh",
+    marginTop: "5vh",
     width: "100%",
     display: "flex",
     flexDirection: "column",
@@ -42,18 +43,16 @@ const useStyles = makeStyles((theme) => ({
   }
 }));
 
-export default function SignUp() {
+export default function Login() {
   const classes = useStyles();
   const history = useHistory();
 
   const emailRef = useRef();
   const passwordRef = useRef();
-  const confirmPasswordRef = useRef();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    if (passwordRef.current.value !== confirmPasswordRef.current.value) return;
-    await signup(emailRef.current.value, passwordRef.current.value);
+    await login(emailRef.current.value, passwordRef.current.value);
     history.push("/")
   }
 
@@ -61,14 +60,16 @@ export default function SignUp() {
   <>
     <Container className={classes.root}>
       <div>
-        <h1 className={classes.heading}>Chatter Box</h1>
-        <form  className={classes.form} onSubmit={handleSubmit}>
-          <input className={classes.input} placeholder="Email" type="email" ref={emailRef} required />
-          <input className={classes.input} placeholder="Password" type="password" ref={passwordRef} required />
-          <input className={classes.input} placeholder="Confirm Password" type="password" ref={confirmPasswordRef} required />
-          <Button className={classes.btn} type="submit">Sign Up</Button>
-        </form>
-        <p className={classes.link} >Already have an account? <Link className={classes.link} to="login">Log In</Link></p>
+        <p className={classes.heading}>Reset Password</p>
+        <p>Enter your email, we'll help you to reset your password.</p>
+        <div>
+          <form onSubmit={handleSubmit} className={classes.form}>
+            <input className={classes.input} placeholder="Email" type="email" ref={emailRef} required />
+            <Button className={classes.btn} type="submit">Reset Password</Button>
+            <Link className={classes.link} to="/login">Login</Link>
+          </form>
+          <p className={classes.link} >Don't have an account? <Link className={classes.link} to="signup">Sign Up</Link></p>
+        </div>
       </div>
     </Container>
   </>
