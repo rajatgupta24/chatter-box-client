@@ -1,24 +1,23 @@
-import React from "react";
-import {BrowserRouter as Router, Route} from "react-router-dom";
-
-import PrivateRoute from "./PrivateRoute";
-
-
-import Chat from "./Components/Chat/Chat";
-import Login from "./Components/Auth/Login/Login";
-import SignUp from "./Components/Auth/Signup/SignUp";
-import ForgetPassword from "./Components/Auth/ForgetPassword/ForgetPassword";
+import Login from "./components/auth/Login";
+import SignUp from "./components/auth/SignUp";
+import Dashboard from "./components/Dashboard";
+import { BrowserRouter, Switch, Route } from "react-router-dom";
+import { AuthProvider } from "./contexts/AuthContext";
+import PrivateRoutes from "./routes/PrivateRoutes";
+import ForgetPassword from "./components/auth/ForgetPassword";
 
 function App() {
   return (
-    <>
-      <Router>
-        <PrivateRoute exact path="/" component={Chat} />
-        <Route path="/signup" component={SignUp} />
-        <Route path="/login" component={Login} />
-        <Route path="/forget-password" component={ForgetPassword} />
-      </Router>
-    </>
+    <BrowserRouter>
+      <AuthProvider>
+        <Switch>
+          <Route path="/login" component={Login}/>
+          <Route path="/signup" component={SignUp}/>
+          <Route path="/forget-password" component={ForgetPassword}/>
+          <PrivateRoutes path="/" exact component={Dashboard} />
+        </Switch>
+      </AuthProvider>
+    </BrowserRouter>
   );
 }
 

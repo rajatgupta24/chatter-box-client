@@ -5,12 +5,13 @@ name: Chatter-Box CI/CD
 
 on:
   push:
-    branches: [ main ]
+    branches: [ master ]
   pull_request:
-    branches: [ main ]
+    branches: [ master ]
 
 jobs:
   build:
+
     runs-on: ubuntu-latest
 
     strategy:
@@ -30,6 +31,7 @@ jobs:
 
   deploy:
     needs: build
+
     runs-on: ubuntu-latest
 
     # Steps in job
