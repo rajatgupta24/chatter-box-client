@@ -23,8 +23,8 @@ const useStyles = makeStyles({
         boxShadow: "0px 0px 3px #999"
     },
     field: {
-        width: "80%",
         marginBottom: "1rem",
+        width: "80%",
         display: "flex",
         flexDirection: "column"
     },
@@ -38,17 +38,16 @@ const useStyles = makeStyles({
     }
 });
 
-export default function SignUp() {
+function UpdateInfo() {
     const classes = useStyles();
     const emailRef = useRef();
     const passwordRef = useRef();
     const confirmPasswordRef = useRef();
-    const { signup } = useAuth();
+    const { currentUser, updatePassword, updateEmail } = useAuth();
     const history = useHistory();
 
     // const [error, setError] = useState(false);
     const [loading, setLoading] = useState(false);
-
 
     const handleSubmit = (e) => {
         e.preventDefault();
@@ -59,37 +58,47 @@ export default function SignUp() {
             return;
         }
 
+        setLoading(true);
         try {
-            setLoading(true);
-            signup(emailRef.current.value, passwordRef.current.value);
-            setLoading(false);
+            if (passwordRef.current.value && emailRef.current.value !== currentUser.email) {
+                updateEmail(emailRef.current.value);
+                updatePassword(passwordRef.current.value);
+            } else if (passwordRef.current.value || emailRef.current.value === currentUser.email) {
+                updatePassword(passwordRef.current.value);
+            } else if (!passwordRef.current.value || emailRef.current.value === currentUser.email) {
+                updateEmail(emailRef.current.value);
+            }
             history.push("/");
+            setLoading(false);
         } catch (error) {
-            // setError(true);
-            console.log(error)
+            console.log(error);
+            // setError(error);
         }
-    }
 
+    }
     return (
         <Container className={classes.root}>
-            <h1 className={classes.heading}>Sign Up</h1>
-            {/* // error */}
+            <h1 className={classes.heading}>Update Info</h1>
+            {/* //error
+            //msg */}
             <form className={classes.form} onSubmit={handleSubmit}>
                 <div className={classes.field}>
                     <label>Email</label>
-                    <input ref={emailRef} type="text" required/>
+                    <input ref={emailRef} type="text" defaultValue={currentUser && currentUser.email} />
                 </div>
                 <div className={classes.field}>
                     <label>Password</label>
-                    <input ref={passwordRef} type="text" required/>
+                    <input ref={passwordRef} type="text" placeholder="Leave empty to keep the previous one"/>
                 </div>
                 <div className={classes.field}>
-                    <label>Confrm Password</label>
-                    <input ref={confirmPasswordRef} type="text" required/>
-                </div>                        
-                <input type="submit" disabled={loading}/>
+                    <label>Comfirm Password</label>
+                    <input ref={confirmPasswordRef} type="text" placeholder="Leave empty to keep the previous one"/>
+                </div>
+                <input type="submit" disabled={loading} />
             </form>
-            <p>Have been here before? <Link to="/login">LogIn</Link></p>
+            <p className={classes.link}>Don't want to mess, go back <Link to="/">Cancel</Link></p>
         </Container>
-    )
+    );
 }
+
+export default UpdateInfo;

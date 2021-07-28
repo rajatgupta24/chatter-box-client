@@ -15,7 +15,7 @@ function Dashboard() {
         <Container>
             <div style={{background: "#efefef"}}>
                 <h1>Hello, World!!!</h1>
-                <p>{currentUser && JSON.stringify(currentUser)}</p>
+                <p>{currentUser && currentUser.email}</p>
                 <Link to="/update-profile">Update Profile</Link>
                 <button onClick={clickHandler}>Log out</button>
             </div>
